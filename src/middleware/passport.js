@@ -11,7 +11,6 @@ passport.use(
   new Strategy(opts, async function(jwt_payload, done) {
     try {
       let user;
-      console.log(jwt_payload);
       user = await User.findById(jwt_payload.user_id);
       if (user) {
         return done(null, user);
@@ -19,6 +18,7 @@ passport.use(
         return done(null, false);
       }
     } catch (err) {
+      err.status = 401;
       done(err, false);
     }
   })
